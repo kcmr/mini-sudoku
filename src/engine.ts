@@ -75,7 +75,7 @@ function getRandomIndex() {
   }
 }
 
-export function removeCells(grid: Grid, level: Level = 'medium'): Grid {
+export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
   const gridCopy = structuredClone(grid);
   const cellsToRemove: number = ({
     easy: 3,
@@ -92,4 +92,22 @@ export function removeCells(grid: Grid, level: Level = 'medium'): Grid {
   }
 
   return gridCopy;
+}
+
+export function isGridComplete(grid: Grid): boolean {
+  for (let row = 0; row < 6; row++) {
+    for (let col = 0; col < 6; col++) {
+      const value = grid[row][col]
+
+      if (value === 0) return false
+
+      grid[row][col] = 0
+      const valid = isValid(grid, row, col, value)
+      grid[row][col] = value
+
+      if (!valid) return false
+    }
+  }
+
+  return true
 }

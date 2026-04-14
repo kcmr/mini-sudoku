@@ -1,8 +1,9 @@
 import dedent from "dedent";
 import pc from 'picocolors';
-import type { Grid, Cursor } from './types.js';
+import type { Grid, Cursor, EditStatus, Status } from './types.js';
+import { Formatter } from "picocolors/types.js";
 
-export function render(grid: Grid, cursor: Cursor, errorMessage = '') {
+export function render(grid: Grid, cursor: Cursor, status: EditStatus = null) {
   console.clear();
 
   const templateParts = {
@@ -23,8 +24,12 @@ export function render(grid: Grid, cursor: Cursor, errorMessage = '') {
       const value = grid[row][colIndex];
       let displayValue = value === 0 ? ' ' : value.toString();
 
-      if (cursor && cursor.y === row && cursor.x === colIndex) {
-        displayValue = pc.inverse(displayValue);
+      const isFocusedCell = cursor && cursor.y === row && cursor.x === colIndex
+
+      if (isFocusedCell) {
+        displayValue = status?.type === 'collision'
+          ? pc.bgRed(pc.white(displayValue))
+          : pc.inverse(displayValue)
       }
 
       colIndex++;
@@ -43,8 +48,16 @@ export function render(grid: Grid, cursor: Cursor, errorMessage = '') {
   }
   
   console.log(dedent`${lines.join(`\n`)}`)
+  console.log(`\n`)
   
-  if (errorMessage) {
-    console.log(`\n${pc.red(errorMessage)}`)
+  if (status) {
+    const color = ({
+      'collision': pc.red,
+      'completed': pc.green,
+      'readonly_cell': pc.yellow,
+      'invalid_key': pc.yellow
+    } as Record<Status, Formatter>)[status.type]
+
+    console.log(color(status.message))
   }
 }
