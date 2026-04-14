@@ -1,4 +1,4 @@
-export type Grid = [number, number, number, number, number, number][];
+import type { Level, Grid } from "./types.js";
 
 export function arrayRange(start: number, end: number): number[] {
   const length = end + 1 - start;
@@ -75,15 +75,13 @@ function getRandomIndex() {
   }
 }
 
-const difficulty = {
-  easy: 3,
-  medium: 4,
-  hard: 5
-}
-
-export function removeCells(grid: Grid, level: 'easy' | 'medium' | 'hard' = 'easy'): Grid {
+export function removeCells(grid: Grid, level: Level = 'medium'): Grid {
   const gridCopy = structuredClone(grid);
-  const cellsToRemove = difficulty[level];
+  const cellsToRemove: number = ({
+    easy: 3,
+    medium: 4,
+    hard: 5
+  } as Record<Level, number>)[level]
 
   for (let row = 0; row < 6; row++) {
     let randomIndex = getRandomIndex()

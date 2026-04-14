@@ -1,11 +1,6 @@
 import dedent from "dedent";
 import pc from 'picocolors';
-import { type Grid } from './engine.js';
-
-type Cursor = {
-  x: number,
-  y: number
-}
+import type { Grid, Cursor } from './types.js';
 
 export function render(grid: Grid, cursor: Cursor, errorMessage = '') {
   console.clear();
@@ -18,7 +13,7 @@ export function render(grid: Grid, cursor: Cursor, errorMessage = '') {
     bottom:         '┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛'
   }
 
-  const template = [templateParts.top];
+  const lines = [templateParts.top];
 
   for (let row = 0; row < 6; row++) {
 
@@ -36,18 +31,18 @@ export function render(grid: Grid, cursor: Cursor, errorMessage = '') {
       return displayValue;
     });
 
-    template.push(rowString);
+    lines.push(rowString);
 
     if (row === 5) {
-      template.push(templateParts.bottom);
+      lines.push(templateParts.bottom);
     } else if (row === 1 || row === 3) {
-      template.push(templateParts.blockSeparator);
+      lines.push(templateParts.blockSeparator);
     } else {
-      template.push(templateParts.rowSeparator);
+      lines.push(templateParts.rowSeparator);
     }
   }
   
-  console.log(dedent`${template.join(`\n`)}`)
+  console.log(dedent`${lines.join(`\n`)}`)
   
   if (errorMessage) {
     console.log(`\n${pc.red(errorMessage)}`)
