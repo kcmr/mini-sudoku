@@ -30,9 +30,15 @@ export class Puzzle {
 		return isValid(this.grid, row, col, value)
 	}
 
-	deleteValue(row: number, col: number): void {
+	deleteValue(row: number, col: number): EditStatus {
 		if (this.isEditable(row, col)) {
 			this.grid[row][col] = 0
+			return null
+		}
+
+		return {
+			type: 'readonly_cell',
+			message: 'Esta celda no es editable',
 		}
 	}
 

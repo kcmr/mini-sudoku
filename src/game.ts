@@ -60,7 +60,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 			process.exit(0)
 		}
 	} else if (isDeleteKey) {
-		puzzle.deleteValue(row, col)
+		editStatus = puzzle.deleteValue(row, col)
 	} else if (isAnyDigitOrNumber) {
 		editStatus = {
 			type: 'invalid_key',
