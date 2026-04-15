@@ -19,7 +19,7 @@ describe('navigation', () => {
 		cli.kill()
 	})
 
-	it('right arrow changes the render (cursor moves right)', async () => {
+	it('right arrow cursor moves right', async () => {
 		const renderBefore = CLIProcess.extractLastRender(cli.getOutput())
 
 		cli.send(RIGHT)
@@ -29,7 +29,7 @@ describe('navigation', () => {
 		expect(renderAfter).not.toBe(renderBefore)
 	})
 
-	it('down arrow changes the render (cursor moves down)', async () => {
+	it('down arrow cursor moves down', async () => {
 		const renderBefore = CLIProcess.extractLastRender(cli.getOutput())
 
 		cli.send(DOWN)

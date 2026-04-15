@@ -17,7 +17,7 @@ describe('input handling', () => {
 		cli.kill()
 	})
 
-	it('shows invalid_key message for unsupported keys', async () => {
+	it('shows an error message for unsupported keys', async () => {
 		cli.send('a')
 		// Wait for the message that appears after the grid in the render
 		await cli.waitForOutput('La tecla a no es válida')
@@ -26,7 +26,7 @@ describe('input handling', () => {
 		expect(clean).toContain('La tecla a no es válida')
 	})
 
-	it('shows readonly_cell message when typing on a pre-filled cell', async () => {
+	it('shows an error message when typing on a pre-filled cell', async () => {
 		// Parse the initial grid to locate the first pre-filled cell
 		const grid = CLIProcess.parseGridFromOutput(cli.getOutput())
 		const target = findPrefilledCell(grid)
