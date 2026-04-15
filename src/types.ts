@@ -20,3 +20,5 @@ export type EditStatus = {
 	type: Status
 	message: string
 } | null
+
+export type Direction = 'up' | 'down' | 'left' | 'right'
