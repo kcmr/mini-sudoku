@@ -1,7 +1,7 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process'
 import { resolve } from 'node:path'
 
-const DIST_PATH = resolve(process.cwd(), 'dist/index.js')
+const DIST_PATH = resolve(process.cwd(), 'dist/cli.js')
 
 const ANSI_REGEX =
 	/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><~]/g
@@ -14,8 +14,8 @@ export class CLIProcess {
 	private proc: ChildProcessWithoutNullStreams
 	private output = ''
 
-	constructor() {
-		this.proc = spawn('node', [DIST_PATH], {
+	constructor(args: string[] = ['--level=medium']) {
+		this.proc = spawn('node', [DIST_PATH, ...args], {
 			// Force colors so ANSI cursor codes are always present, even on non-TTY pipes
 			env: { ...process.env, FORCE_COLOR: '1' },
 		})

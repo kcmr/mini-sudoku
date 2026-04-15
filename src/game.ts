@@ -6,10 +6,11 @@ import {
 	type Direction,
 	type EditStatus,
 	isCellValue,
+	type Level,
 } from './types.js'
 
-export function startGame() {
-	const puzzle = new Puzzle()
+export function startGame(level: Level = 'medium') {
+	const puzzle = new Puzzle(level)
 	const cursor: Cursor = { x: 0, y: 0 }
 
 	render(puzzle.grid, cursor)
