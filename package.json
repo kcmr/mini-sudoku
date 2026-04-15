@@ -26,7 +26,6 @@
     "vitest": "^4.1.4"
   },
   "dependencies": {
-    "dedent": "^1.7.2",
     "picocolors": "^1.1.1"
   }
 }
