@@ -4,7 +4,7 @@ import {
 	isGridComplete,
 	isValid,
 	removeRandomCells,
-} from './engine.js'
+} from './puzzle.js'
 import { render } from './renderer.js'
 import type { Cursor, Direction, EditStatus, Grid } from './types.js'
 import { arrayRange } from './utils.js'
