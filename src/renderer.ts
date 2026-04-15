@@ -20,7 +20,7 @@ const STATUS_COLORS: Record<Status, Formatter> = {
 
 export function render(grid: Grid, cursor: Cursor, status: EditStatus = null) {
 	console.clear()
-	buildBoard(grid, cursor, status)
+	printBoard(grid, cursor, status)
 	console.log()
 
 	if (status) {
@@ -29,7 +29,7 @@ export function render(grid: Grid, cursor: Cursor, status: EditStatus = null) {
 	}
 }
 
-function buildBoard(grid: Grid, cursor: Cursor, status: EditStatus) {
+function printBoard(grid: Grid, cursor: Cursor, status: EditStatus) {
 	const lines = [TEMPLATE.top]
 
 	for (let row = 0; row < 6; row++) {
