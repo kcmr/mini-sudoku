@@ -67,12 +67,6 @@ export function getGrid(): Grid {
 	return structuredClone(grid)
 }
 
-function getRandomIndex() {
-	const numbers = shuffle(arrayRange(0, 5))
-
-	return () => numbers.pop() ?? 0
-}
-
 export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
 	const gridCopy = structuredClone(grid)
 	const cellsToRemove: number = (
@@ -84,10 +78,11 @@ export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
 	)[level]
 
 	for (let row = 0; row < 6; row++) {
-		const randomIndex = getRandomIndex()
+		const randomIndexes = shuffle(arrayRange(0, 5))
 
 		for (let i = 0; i < cellsToRemove; i++) {
-			gridCopy[row][randomIndex()] = 0
+			const col = randomIndexes.pop() ?? 0
+			gridCopy[row][col] = 0
 		}
 	}
 
