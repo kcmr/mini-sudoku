@@ -25,6 +25,9 @@ export type Direction = 'up' | 'down' | 'left' | 'right'
 
 export type CellValue = 1 | 2 | 3 | 4 | 5 | 6
 
+/**
+ * Returns true if the value is a valid cell value (1-6)
+ */
 export function isCellValue(value: number): value is CellValue {
 	return value >= 1 && value <= 6
 }

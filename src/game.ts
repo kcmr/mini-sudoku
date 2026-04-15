@@ -41,11 +41,14 @@ function moveCursor(cursor: Cursor, direction: Direction) {
 
 function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 	let editStatus: EditStatus = null
-	const value = Number(key.name)
-	const isDeleteKey = key.name === 'x'
 	const { y: row, x: col } = cursor
 
-	if (isCellValue(value)) {
+	const value = Number(key.name)
+	const isAllowedCellValue = isCellValue(value)
+	const isDeleteKey = key.name === 'x'
+	const isAnyDigitOrNumber = key?.name?.match(/^[a-z0-9]$/i)
+
+	if (isAllowedCellValue) {
 		editStatus = puzzle.setCell(row, col, value)
 
 		if (!editStatus && puzzle.isComplete()) {
@@ -58,7 +61,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 		}
 	} else if (isDeleteKey) {
 		puzzle.deleteValue(row, col)
-	} else if (key?.name?.match(/^[a-z0-9]$/i)) {
+	} else if (isAnyDigitOrNumber) {
 		editStatus = {
 			type: 'invalid_key',
 			message: `La tecla ${key.name} no es válida. Usa números del 1 al 6.`,
