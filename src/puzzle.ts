@@ -30,8 +30,7 @@ export class Puzzle {
 		)
 	}
 
-	isValidMove(row: number, col: number, value: number): boolean {
-		if (!this.isEditable(row, col)) return false
+	isValid(row: number, col: number, value: number): boolean {
 		return isValid(this.grid, row, col, value)
 	}
 
@@ -49,12 +48,9 @@ export class Puzzle {
 			}
 		}
 
-		// Temporarily set the cell to 0 to validate the move and then set it to the new value
-		this.grid[row][col] = 0
-		const isValidMove = this.isValidMove(row, col, value)
 		this.grid[row][col] = value
 
-		if (!isValidMove) {
+		if (!this.isValid(row, col, value)) {
 			return {
 				type: 'collision',
 				message: `El valor ${value} ya existe en la fila, columna o bloque`,
@@ -66,9 +62,9 @@ export class Puzzle {
 }
 
 export function isValid(grid: Grid, row: number, col: number, num: number) {
-	// check if value is already present in the column or row
 	for (let i = 0; i < 6; i++) {
-		if (grid[row][i] === num || grid[i][col] === num) return false
+		if (i !== col && grid[row][i] === num) return false // ignore current cell in the row
+		if (i !== row && grid[i][col] === num) return false // ignore current cell in the column
 	}
 
 	const startRow = Math.floor(row / 2) * 2
@@ -77,7 +73,8 @@ export function isValid(grid: Grid, row: number, col: number, num: number) {
 	// check if the value is already present in the block
 	for (let i = 0; i < 2; i++) {
 		for (let j = 0; j < 3; j++) {
-			if (grid[startRow + i][startCol + j] === num) return false
+			const isSelf = startRow + i === row && startCol + j === col
+			if (!isSelf && grid[startRow + i][startCol + j] === num) return false
 		}
 	}
 
