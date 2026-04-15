@@ -51,6 +51,28 @@ describe('input handling', () => {
 		expect(clean).toContain('Esta celda no es editable')
 	})
 
+	it('shows an error message when deleting on a pre-filled cell', async () => {
+		const grid = CLIProcess.parseGridFromOutput(cli.getOutput())
+		const target = findPrefilledCell(grid)
+
+		if (!target) {
+			throw new Error(
+				'No pre-filled cell found in initial grid — puzzle generation issue',
+			)
+		}
+
+		const moves = target.col + target.row
+		for (let i = 0; i < target.col; i++) cli.send(RIGHT)
+		for (let i = 0; i < target.row; i++) cli.send(DOWN)
+		if (moves > 0) await cli.waitForRenderCount(1 + moves)
+
+		cli.send('x')
+		await cli.waitForOutput('Esta celda no es editable')
+
+		const clean = stripAnsi(cli.getOutput())
+		expect(clean).toContain('Esta celda no es editable')
+	})
+
 	it('shows no error message when deleting on an editable cell', async () => {
 		// Navigate to the first empty cell (editable)
 		const grid = CLIProcess.parseGridFromOutput(cli.getOutput())
