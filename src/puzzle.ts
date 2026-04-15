@@ -63,7 +63,9 @@ export class Puzzle {
 	}
 }
 
-export function isValid(grid: Grid, row: number, col: number, num: number) {
+// --- Helper functions for grid generation and validation ---
+
+function isValid(grid: Grid, row: number, col: number, num: number) {
 	for (let i = 0; i < 6; i++) {
 		if (i !== col && grid[row][i] === num) return false // ignore current cell in the row
 		if (i !== row && grid[i][col] === num) return false // ignore current cell in the column
@@ -84,10 +86,9 @@ export function isValid(grid: Grid, row: number, col: number, num: number) {
 }
 
 function findEmptyCell(grid: Grid): { row: number; col: number } | null {
-	for (let row = 0; row < 6; row++) {
-		for (let col = 0; col < 6; col++) {
-			if (grid[row][col] === 0) return { row, col }
-		}
+	for (const [rowIndex, row] of grid.entries()) {
+		const col = row.indexOf(0)
+		if (col !== -1) return { row: rowIndex, col }
 	}
 
 	return null
@@ -117,7 +118,7 @@ function fillGrid(grid: Grid): boolean {
 	return tryCandidates(grid, cell.row, cell.col)
 }
 
-export function getGrid(): Grid {
+function getGrid(): Grid {
 	const grid = Array.from({ length: 6 }, () => Array(6).fill(0)) as Grid
 
 	fillGrid(grid)
@@ -125,7 +126,7 @@ export function getGrid(): Grid {
 	return grid
 }
 
-export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
+function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
 	const gridCopy = structuredClone(grid)
 	const cellsToRemove: number = {
 		easy: 3,
