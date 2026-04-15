@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { Puzzle } from '../../src/puzzle.js'
-import type { Grid } from '../../src/types.js'
+import { Puzzle } from '#src/puzzle.js'
+import type { Grid } from '#src/types.js'
 import {
 	COMPLETE_GRID,
 	collisionCase,
 	firstEditable,
 	firstNonEditable,
 	validCase,
-} from '../helpers/puzzle-helpers.js'
+} from '#tests/helpers/puzzle-helpers.js'
 
 describe('Puzzle', () => {
 	let puzzle: Puzzle

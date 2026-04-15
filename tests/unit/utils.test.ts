@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { arrayRange, shuffle } from '../../src/utils.js'
+import { arrayRange, shuffle } from '#src/utils.js'
 
 describe('arrayRange', () => {
 	it('returns an inclusive range from start to end', () => {

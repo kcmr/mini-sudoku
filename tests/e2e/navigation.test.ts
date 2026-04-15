@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { CLIProcess } from '../helpers/cli-runner.js'
+import { CLIProcess } from '#tests/helpers/cli-runner.js'
 
 // Raw escape sequences for arrow keys
 const RIGHT = '\x1B[C'

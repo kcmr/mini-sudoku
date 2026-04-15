@@ -2,6 +2,10 @@
   "name": "mini-sudoku",
   "version": "1.0.0",
   "type": "module",
+  "imports": {
+    "#src/*.js": "./src/*.js",
+    "#tests/*.js": "./tests/*.js"
+  },
   "bin": {
     "mini-sudoku": "./dist/index.js"
   },

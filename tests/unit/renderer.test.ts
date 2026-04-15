@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { render } from '../../src/renderer.js'
-import type { Cursor, EditStatus, Grid } from '../../src/types.js'
+import { render } from '#src/renderer.js'
+import type { Cursor, EditStatus, Grid } from '#src/types.js'
 
 // Mock picocolors before renderer is evaluated so STATUS_COLORS captures the mocks
 vi.mock('picocolors', () => ({

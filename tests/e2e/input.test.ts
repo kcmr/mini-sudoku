@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { CLIProcess, stripAnsi } from '../helpers/cli-runner.js'
-import { findEmptyCell, findPrefilledCell } from '../helpers/puzzle-helpers.js'
+import { CLIProcess, stripAnsi } from '#tests/helpers/cli-runner.js'
+import {
+	findEmptyCell,
+	findPrefilledCell,
+} from '#tests/helpers/puzzle-helpers.js'
 
 const RIGHT = '\x1B[C'
 const DOWN = '\x1B[B'

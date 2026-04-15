@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { CLIProcess, stripAnsi } from '../helpers/cli-runner.js'
+import { CLIProcess, stripAnsi } from '#tests/helpers/cli-runner.js'
 
 describe('startup', () => {
 	let cli: CLIProcess

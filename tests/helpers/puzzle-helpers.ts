@@ -1,5 +1,5 @@
-import type { Puzzle } from '../../src/puzzle.js'
-import type { CellValue, Grid } from '../../src/types.js'
+import type { Puzzle } from '#src/puzzle.js'
+import type { CellValue, Grid } from '#src/types.js'
 
 /** A valid, complete 6×6 Sudoku grid (no zeros). Useful for isComplete / isValid tests. */
 export const COMPLETE_GRID: Grid = [
