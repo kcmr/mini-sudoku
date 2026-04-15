@@ -9,6 +9,7 @@
   "bin": {
     "mini-sudoku": "./dist/cli.js"
   },
+  "files": ["dist"],
   "scripts": {
     "pretest:e2e": "npm run build",
     "test:e2e": "vitest run --project e2e",
