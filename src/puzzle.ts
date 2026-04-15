@@ -21,11 +21,7 @@ export class Puzzle {
 		return this.grid.every((row, rowIdx) =>
 			row.every((value, colIdx) => {
 				if (value === 0) return false
-				this.grid[rowIdx][colIdx] = 0
-				const valid = isValid(this.grid, rowIdx, colIdx, value)
-				this.grid[rowIdx][colIdx] = value
-
-				return valid
+				return isValid(this.grid, rowIdx, colIdx, value)
 			}),
 		)
 	}
@@ -125,13 +121,11 @@ export function getGrid(): Grid {
 
 export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
 	const gridCopy = structuredClone(grid)
-	const cellsToRemove: number = (
-		{
-			easy: 3,
-			medium: 4,
-			hard: 5,
-		} as Record<Level, number>
-	)[level]
+	const cellsToRemove: number = {
+		easy: 3,
+		medium: 4,
+		hard: 5,
+	}[level]
 
 	for (let row = 0; row < 6; row++) {
 		const randomIndexes = shuffle(arrayRange(0, 5))
