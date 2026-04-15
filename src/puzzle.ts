@@ -1,5 +1,69 @@
-import type { Grid, Level } from './types.js'
+import type { CellValue, EditStatus, Grid, Level } from './types.js'
 import { arrayRange, shuffle } from './utils.js'
+
+export class Puzzle {
+	/** Original grid with some cells removed (0 represents empty cells) */
+	readonly initialGrid: Grid
+
+	/** Current state of the grid, mutable by the player */
+	grid: Grid
+
+	constructor(level: Level = 'medium') {
+		this.initialGrid = removeRandomCells(getGrid(), level)
+		this.grid = structuredClone(this.initialGrid)
+	}
+
+	isEditable(row: number, col: number): boolean {
+		return this.initialGrid[row][col] === 0
+	}
+
+	isComplete(): boolean {
+		return this.grid.every((row, rowIdx) =>
+			row.every((value, colIdx) => {
+				if (value === 0) return false
+				this.grid[rowIdx][colIdx] = 0
+				const valid = isValid(this.grid, rowIdx, colIdx, value)
+				this.grid[rowIdx][colIdx] = value
+
+				return valid
+			}),
+		)
+	}
+
+	isValidMove(row: number, col: number, value: number): boolean {
+		if (!this.isEditable(row, col)) return false
+		return isValid(this.grid, row, col, value)
+	}
+
+	deleteValue(row: number, col: number): void {
+		if (this.isEditable(row, col)) {
+			this.grid[row][col] = 0
+		}
+	}
+
+	setCell(row: number, col: number, value: CellValue): EditStatus {
+		if (!this.isEditable(row, col)) {
+			return {
+				type: 'readonly_cell',
+				message: 'Esta celda no es editable',
+			}
+		}
+
+		// Temporarily set the cell to 0 to validate the move and then set it to the new value
+		this.grid[row][col] = 0
+		const isValidMove = this.isValidMove(row, col, value)
+		this.grid[row][col] = value
+
+		if (!isValidMove) {
+			return {
+				type: 'collision',
+				message: `El valor ${value} ya existe en la fila, columna o bloque`,
+			}
+		}
+
+		return null
+	}
+}
 
 export function isValid(grid: Grid, row: number, col: number, num: number) {
 	// check if value is already present in the column or row
@@ -20,30 +84,38 @@ export function isValid(grid: Grid, row: number, col: number, num: number) {
 	return true
 }
 
-function fillGrid(grid: Grid): boolean {
+function findEmptyCell(grid: Grid): { row: number; col: number } | null {
 	for (let row = 0; row < 6; row++) {
 		for (let col = 0; col < 6; col++) {
-			if (grid[row][col] === 0) {
-				const numbers = shuffle(arrayRange(1, 6))
-
-				for (const num of numbers) {
-					if (isValid(grid, row, col, num)) {
-						grid[row][col] = num
-
-						if (fillGrid(grid)) {
-							return true
-						}
-
-						grid[row][col] = 0
-					}
-				}
-
-				return false
-			}
+			if (grid[row][col] === 0) return { row, col }
 		}
 	}
 
-	return true
+	return null
+}
+
+function tryCandidates(grid: Grid, row: number, col: number): boolean {
+	const candidates = shuffle(arrayRange(1, 6))
+
+	for (const num of candidates) {
+		if (isValid(grid, row, col, num)) {
+			grid[row][col] = num
+
+			if (fillGrid(grid)) {
+				return true
+			}
+
+			grid[row][col] = 0
+		}
+	}
+
+	return false
+}
+
+function fillGrid(grid: Grid): boolean {
+	const cell = findEmptyCell(grid)
+	if (!cell) return true
+	return tryCandidates(grid, cell.row, cell.col)
 }
 
 export function getGrid(): Grid {
@@ -51,7 +123,7 @@ export function getGrid(): Grid {
 
 	fillGrid(grid)
 
-	return structuredClone(grid)
+	return grid
 }
 
 export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
@@ -74,22 +146,4 @@ export function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
 	}
 
 	return gridCopy
-}
-
-export function isGridComplete(grid: Grid): boolean {
-	for (let row = 0; row < 6; row++) {
-		for (let col = 0; col < 6; col++) {
-			const value = grid[row][col]
-
-			if (value === 0) return false
-
-			grid[row][col] = 0
-			const valid = isValid(grid, row, col, value)
-			grid[row][col] = value
-
-			if (!valid) return false
-		}
-	}
-
-	return true
 }

@@ -1,33 +1,30 @@
 import type { Key } from 'node:readline'
-import {
-	getGrid,
-	isGridComplete,
-	isValid,
-	removeRandomCells,
-} from './puzzle.js'
+import { Puzzle } from './puzzle.js'
 import { render } from './renderer.js'
-import type { Cursor, Direction, EditStatus, Grid } from './types.js'
-import { arrayRange } from './utils.js'
+import {
+	type Cursor,
+	type Direction,
+	type EditStatus,
+	isCellValue,
+} from './types.js'
 
 export function startGame() {
-	const initialGrid = removeRandomCells(getGrid())
-	const grid = structuredClone(initialGrid)
+	const puzzle = new Puzzle()
 	const cursor: Cursor = { x: 0, y: 0 }
 
-	render(grid, cursor)
+	render(puzzle.grid, cursor)
 
-	process.stdin.on('keypress', handleKeyPress(cursor, grid, initialGrid))
+	process.stdin.on('keypress', handleKeyPress(cursor, puzzle))
 }
 
 function handleKeyPress(
 	cursor: Cursor,
-	grid: Grid,
-	initialGrid: Grid,
+	puzzle: Puzzle,
 ): (stream: unknown, key: Key) => void {
 	return (_stream, key: Key) => {
 		handleExit(key)
 		moveCursor(cursor, key.name as Direction)
-		updatePuzzle(grid, initialGrid, key, cursor)
+		updatePuzzle(puzzle, key, cursor)
 	}
 }
 
@@ -42,25 +39,25 @@ function moveCursor(cursor: Cursor, direction: Direction) {
 	if (direction === 'right' && cursor.x < 5) cursor.x++
 }
 
-function updatePuzzle(grid: Grid, initialGrid: Grid, key: Key, cursor: Cursor) {
-	const allowedNumbers = arrayRange(1, 6).map(String)
-	const isDeleteKey = key.name === 'x'
-	const value = Number(key.name)
-	const editValue = isDeleteKey ? 0 : value
-
+function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 	let editStatus: EditStatus = null
+	const value = Number(key.name)
+	const isDeleteKey = key.name === 'x'
+	const { y: row, x: col } = cursor
 
-	if (isDeleteKey || allowedNumbers.includes(key.name as string)) {
-		editStatus = updateCell(grid, initialGrid, cursor, editValue)
+	if (isCellValue(value)) {
+		editStatus = puzzle.setCell(row, col, value)
 
-		if (!editStatus && isGridComplete(grid)) {
-			render(grid, cursor, {
+		if (!editStatus && puzzle.isComplete()) {
+			render(puzzle.grid, cursor, {
 				type: 'completed',
 				message: '¡Enhorabuena! Mini Sudoku completado',
 			})
 
 			process.exit(0)
 		}
+	} else if (isDeleteKey) {
+		puzzle.deleteValue(row, col)
 	} else if (key?.name?.match(/^[a-z0-9]$/i)) {
 		editStatus = {
 			type: 'invalid_key',
@@ -68,41 +65,5 @@ function updatePuzzle(grid: Grid, initialGrid: Grid, key: Key, cursor: Cursor) {
 		}
 	}
 
-	render(grid, cursor, editStatus)
-}
-
-function updateCell(
-	grid: Grid,
-	initialGrid: Grid,
-	cursor: Cursor,
-	value: number,
-): EditStatus {
-	const { y: row, x: col } = cursor
-	const isEditableCell = initialGrid[row][col] === 0
-
-	if (!isEditableCell) {
-		return {
-			type: 'readonly_cell',
-			message: 'Esta celda no es editable',
-		}
-	}
-
-	if (value === 0) {
-		grid[row][col] = 0
-		return null
-	}
-
-	grid[row][col] = 0
-
-	const isValidMove = isValid(grid, row, col, value)
-	grid[row][col] = value
-
-	if (!isValidMove) {
-		return {
-			type: 'collision',
-			message: `El valor ${value} ya existe en la fila, columna o bloque`,
-		}
-	}
-
-	return null
+	render(puzzle.grid, cursor, editStatus)
 }
