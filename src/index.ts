@@ -8,8 +8,8 @@ import {
 	isValid,
 	removeRandomCells,
 } from './engine.js'
+import { render } from './renderer.js'
 import type { EditStatus, Grid } from './types.js'
-import { render } from './ui.js'
 import { arrayRange } from './utils.js'
 
 readline.emitKeypressEvents(process.stdin)
