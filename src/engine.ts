@@ -1,10 +1,5 @@
 import type { Grid, Level } from './types.js'
-
-export function arrayRange(start: number, end: number): number[] {
-	const length = end + 1 - start
-
-	return Array.from({ length }).map((_, i) => start + i)
-}
+import { arrayRange, shuffle } from './utils.js'
 
 export function isValid(grid: Grid, row: number, col: number, num: number) {
 	// check if value is already present in the column or row
@@ -23,14 +18,6 @@ export function isValid(grid: Grid, row: number, col: number, num: number) {
 	}
 
 	return true
-}
-
-function shuffle(array: number[]): number[] {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1))
-		;[array[i], array[j]] = [array[j], array[i]]
-	}
-	return array
 }
 
 function fillGrid(grid: Grid): boolean {

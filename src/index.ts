@@ -3,7 +3,6 @@
 import process from 'node:process'
 import readline from 'node:readline'
 import {
-	arrayRange,
 	getGrid,
 	isGridComplete,
 	isValid,
@@ -11,6 +10,7 @@ import {
 } from './engine.js'
 import type { EditStatus, Grid } from './types.js'
 import { render } from './ui.js'
+import { arrayRange } from './utils.js'
 
 readline.emitKeypressEvents(process.stdin)
 if (process.stdin.isTTY) process.stdin.setRawMode(true)
