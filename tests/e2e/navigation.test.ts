@@ -6,6 +6,7 @@ const RIGHT = '\x1B[C'
 const LEFT = '\x1B[D'
 const UP = '\x1B[A'
 const DOWN = '\x1B[B'
+const CTRL_R = '\x12'
 
 describe('navigation', () => {
 	let cli: CLIProcess
@@ -83,5 +84,19 @@ describe('navigation', () => {
 
 		const renderAfter = CLIProcess.extractLastRender(cli.getOutput())
 		expect(renderAfter).toBe(renderAtBorder)
+	})
+
+	it('Ctrl+R resets cursor to (0,0)', async () => {
+		const renderInitial = CLIProcess.extractLastRender(cli.getOutput())
+
+		cli.send(RIGHT)
+		cli.send(DOWN)
+		await cli.waitForRenderCount(3)
+
+		cli.send(CTRL_R)
+		await cli.waitForRenderCount(4)
+
+		const renderAfterReset = CLIProcess.extractLastRender(cli.getOutput())
+		expect(renderAfterReset).toBe(renderInitial)
 	})
 })

@@ -39,6 +39,11 @@ function moveCursor(cursor: Cursor, direction: Direction) {
 	if (direction === 'right' && cursor.x < 5) cursor.x++
 }
 
+function resetCursor(cursor: Cursor) {
+	cursor.x = 0
+	cursor.y = 0
+}
+
 function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 	let editStatus: EditStatus = null
 	const { y: row, x: col } = cursor
@@ -46,6 +51,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 	const value = Number(key.name)
 	const isAllowedCellValue = isCellValue(value)
 	const isDeleteKey = key.name === 'x'
+	const isResetCommand = key.ctrl && key.name === 'r'
 	const isAnyDigitOrNumber = key?.name?.match(/^[a-z0-9]$/i)
 
 	if (isAllowedCellValue) {
@@ -61,6 +67,9 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 		}
 	} else if (isDeleteKey) {
 		editStatus = puzzle.deleteValue(row, col)
+	} else if (isResetCommand) {
+		editStatus = puzzle.reset()
+		resetCursor(cursor)
 	} else if (isAnyDigitOrNumber) {
 		editStatus = {
 			type: 'invalid_key',

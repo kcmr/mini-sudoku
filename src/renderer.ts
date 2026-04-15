@@ -14,6 +14,7 @@ const TEMPLATE = {
 const STATUS_COLORS: Record<Status, Formatter> = {
 	collision: pc.red,
 	completed: pc.green,
+	reset: pc.blue,
 	readonly_cell: pc.yellow,
 	invalid_key: pc.yellow,
 }

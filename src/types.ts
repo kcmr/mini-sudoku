@@ -10,6 +10,7 @@ export type Level = 'easy' | 'medium' | 'hard'
 const status = [
 	'completed', // game-level: the puzzle is completed
 	'invalid_key', // game-level: input not allowed
+	'reset', // puzzle-level: the puzzle was reset
 	'readonly_cell', // puzzle-level: edition rule
 	'collision', // puzzle-level: validation rule
 ] as const

@@ -99,4 +99,17 @@ describe('Puzzle', () => {
 			expect(puzzle.isComplete()).toBe(false)
 		})
 	})
+
+	describe('reset', () => {
+		it('resets the grid to the initial state and returns a reset status', () => {
+			// Modify the grid
+			puzzle.grid[0][0] = 9
+			expect(puzzle.grid[0][0]).toBe(9)
+
+			// Reset the puzzle
+			const result = puzzle.reset()
+			expect(result.type).toBe('reset')
+			expect(puzzle.grid[0][0]).toBe(puzzle.initialGrid[0][0]) // should be back to initial value
+		})
+	})
 })

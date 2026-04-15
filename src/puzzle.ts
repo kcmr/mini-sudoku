@@ -61,6 +61,15 @@ export class Puzzle {
 
 		return null
 	}
+
+	reset(): Exclude<EditStatus, null> {
+		this.grid = structuredClone(this.initialGrid)
+
+		return {
+			type: 'reset',
+			message: 'Puzzle reiniciado',
+		}
+	}
 }
 
 // --- Helper functions for grid generation and validation ---

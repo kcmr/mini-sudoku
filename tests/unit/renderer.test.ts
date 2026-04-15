@@ -11,6 +11,7 @@ vi.mock('picocolors', () => ({
 		red: (s: string) => `[red]${s}[/red]`,
 		green: (s: string) => `[green]${s}[/green]`,
 		yellow: (s: string) => `[yellow]${s}[/yellow]`,
+		blue: (s: string) => `[blue]${s}[/blue]`,
 	},
 }))
 
@@ -97,7 +98,7 @@ describe('render', () => {
 		expect(board).not.toContain('[inv]3[/inv]')
 	})
 
-	it('prints the status message below the board', () => {
+	it('prints the status message in green for completed', () => {
 		const status: EditStatus = { type: 'completed', message: 'Puzzle done!' }
 		render(GRID, CURSOR, status)
 		// log calls: [0] board, [1] blank line, [2] status message
@@ -120,6 +121,12 @@ describe('render', () => {
 		const status: EditStatus = { type: 'collision', message: 'Already there' }
 		render(GRID, CURSOR, status)
 		expect(logSpy.mock.calls[2][0]).toBe('[red]Already there[/red]')
+	})
+
+	it('prints the status message in blue for reset', () => {
+		const status: EditStatus = { type: 'reset', message: 'Puzzle reset' }
+		render(GRID, CURSOR, status)
+		expect(logSpy.mock.calls[2][0]).toBe('[blue]Puzzle reset[/blue]')
 	})
 
 	it('does not print a status message line when status is null', () => {

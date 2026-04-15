@@ -8,6 +8,7 @@ import {
 const RIGHT = '\x1B[C'
 const DOWN = '\x1B[B'
 const CTRL_C = '\x03'
+const CTRL_R = '\x12'
 
 describe('input handling', () => {
 	let cli: CLIProcess
@@ -98,6 +99,36 @@ describe('input handling', () => {
 		expect(clean).not.toContain('Esta celda no es editable')
 		expect(clean).not.toContain('ya existe')
 		expect(clean).not.toContain('no es válida')
+	})
+
+	it('resets the puzzle on Ctrl+R and restores the initial grid state', async () => {
+		const gridBefore = CLIProcess.parseGridFromOutput(cli.getOutput())
+		const target = findEmptyCell(gridBefore)
+		if (!target) throw new Error('No empty cell found in initial grid')
+
+		const moves = target.col + target.row
+		for (let i = 0; i < target.col; i++) cli.send(RIGHT)
+		for (let i = 0; i < target.row; i++) cli.send(DOWN)
+		if (moves > 0) await cli.waitForRenderCount(1 + moves)
+
+		cli.send('1')
+		await cli.waitForRenderCount(1 + moves + 1)
+
+		cli.send(CTRL_R)
+		await cli.waitForOutput('Puzzle reiniciado')
+
+		const gridAfterReset = CLIProcess.parseGridFromOutput(
+			CLIProcess.extractLastRender(cli.getOutput()),
+		)
+		expect(gridAfterReset[target.row][target.col]).toBe(0)
+	})
+
+	it('shows a reset message on Ctrl+R', async () => {
+		cli.send(CTRL_R)
+		await cli.waitForOutput('Puzzle reiniciado')
+
+		const clean = stripAnsi(cli.getOutput())
+		expect(clean).toContain('Puzzle reiniciado')
 	})
 
 	it('exits cleanly on Ctrl+C', async () => {
