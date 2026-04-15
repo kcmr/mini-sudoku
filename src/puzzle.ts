@@ -138,7 +138,7 @@ function removeRandomCells(grid: Grid, level: Level = 'medium'): Grid {
 		const randomIndexes = shuffle(arrayRange(0, 5))
 
 		for (let i = 0; i < cellsToRemove; i++) {
-			const col = randomIndexes.pop() ?? 0
+			const col = randomIndexes[i]
 			gridCopy[row][col] = 0
 		}
 	}

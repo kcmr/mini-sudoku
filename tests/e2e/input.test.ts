@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { CLIProcess, stripAnsi } from '../helpers/cli-runner.js'
+import { findEmptyCell, findPrefilledCell } from '../helpers/puzzle-helpers.js'
 
 const RIGHT = '\x1B[C'
 const DOWN = '\x1B[B'
@@ -103,25 +104,3 @@ describe('input handling', () => {
 		expect(code).toBe(0)
 	})
 })
-
-// ─── helpers ────────────────────────────────────────────────────────────────
-
-function findPrefilledCell(
-	grid: number[][],
-): { row: number; col: number } | null {
-	for (let row = 0; row < grid.length; row++) {
-		for (let col = 0; col < (grid[row]?.length ?? 0); col++) {
-			if ((grid[row]?.[col] ?? 0) !== 0) return { row, col }
-		}
-	}
-	return null
-}
-
-function findEmptyCell(grid: number[][]): { row: number; col: number } | null {
-	for (let row = 0; row < grid.length; row++) {
-		for (let col = 0; col < (grid[row]?.length ?? 0); col++) {
-			if ((grid[row]?.[col] ?? 1) === 0) return { row, col }
-		}
-	}
-	return null
-}
