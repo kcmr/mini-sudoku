@@ -13,7 +13,7 @@ import type { EditStatus, Grid } from './types.js'
 import { render } from './ui.js'
 
 readline.emitKeypressEvents(process.stdin)
-process.stdin.setRawMode(true)
+if (process.stdin.isTTY) process.stdin.setRawMode(true)
 
 const cursor = { x: 0, y: 0 }
 const initialGrid = removeRandomCells(getGrid())

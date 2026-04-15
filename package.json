@@ -6,7 +6,8 @@
     "mini-sudoku": "./dist/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest:e2e": "tsup src/index.ts --format esm --clean",
+    "test:e2e": "vitest run tests/e2e",
     "dev": "tsup src/index.ts --format esm --watch --onSuccess \"node dist/index.js\"",
     "build": "tsup src/index.ts --format esm --clean --minify",
     "prepublishOnly": "npm run build",
@@ -20,11 +21,12 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
     "@types/node": "^25.6.0",
-    "picocolors": "^1.1.1",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
   },
   "dependencies": {
-    "dedent": "^1.7.2"
+    "dedent": "^1.7.2",
+    "picocolors": "^1.1.1"
   }
 }
