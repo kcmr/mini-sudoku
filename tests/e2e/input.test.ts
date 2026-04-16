@@ -25,10 +25,10 @@ describe('input handling', () => {
 	it('shows an error message for unsupported keys', async () => {
 		cli.send('a')
 		// Wait for the message that appears after the grid in the render
-		await cli.waitForOutput('La tecla a no es válida')
+		await cli.waitForOutput('Key a is not valid')
 
 		const clean = stripAnsi(cli.getOutput())
-		expect(clean).toContain('La tecla a no es válida')
+		expect(clean).toContain('Key a is not valid')
 	})
 
 	it('shows an error message when typing on a pre-filled cell', async () => {
@@ -50,10 +50,10 @@ describe('input handling', () => {
 
 		// Attempt to overwrite a pre-filled cell and wait for the error message
 		cli.send('1')
-		await cli.waitForOutput('Esta celda no es editable')
+		await cli.waitForOutput('This cell is not editable')
 
 		const clean = stripAnsi(cli.getOutput())
-		expect(clean).toContain('Esta celda no es editable')
+		expect(clean).toContain('This cell is not editable')
 	})
 
 	it('shows an error message when deleting on a pre-filled cell', async () => {
@@ -72,10 +72,10 @@ describe('input handling', () => {
 		if (moves > 0) await cli.waitForRenderCount(1 + moves)
 
 		cli.send('x')
-		await cli.waitForOutput('Esta celda no es editable')
+		await cli.waitForOutput('This cell is not editable')
 
 		const clean = stripAnsi(cli.getOutput())
-		expect(clean).toContain('Esta celda no es editable')
+		expect(clean).toContain('This cell is not editable')
 	})
 
 	it('shows no error message when deleting on an editable cell', async () => {
@@ -96,9 +96,9 @@ describe('input handling', () => {
 		await cli.waitForRenderCount(1 + moves + 1)
 
 		const clean = stripAnsi(CLIProcess.extractLastRender(cli.getOutput()))
-		expect(clean).not.toContain('Esta celda no es editable')
-		expect(clean).not.toContain('ya existe')
-		expect(clean).not.toContain('no es válida')
+		expect(clean).not.toContain('This cell is not editable')
+		expect(clean).not.toContain('already exists')
+		expect(clean).not.toContain('is not valid')
 	})
 
 	it('resets the puzzle on Ctrl+R and restores the initial grid state', async () => {
@@ -115,7 +115,7 @@ describe('input handling', () => {
 		await cli.waitForRenderCount(1 + moves + 1)
 
 		cli.send(CTRL_R)
-		await cli.waitForOutput('Puzzle reiniciado')
+		await cli.waitForOutput('Puzzle reset')
 
 		const gridAfterReset = CLIProcess.parseGridFromOutput(
 			CLIProcess.extractLastRender(cli.getOutput()),
@@ -125,10 +125,10 @@ describe('input handling', () => {
 
 	it('shows a reset message on Ctrl+R', async () => {
 		cli.send(CTRL_R)
-		await cli.waitForOutput('Puzzle reiniciado')
+		await cli.waitForOutput('Puzzle reset')
 
 		const clean = stripAnsi(cli.getOutput())
-		expect(clean).toContain('Puzzle reiniciado')
+		expect(clean).toContain('Puzzle reset')
 	})
 
 	it('exits cleanly on Ctrl+C', async () => {

@@ -38,7 +38,7 @@ export class Puzzle {
 
 		return {
 			type: 'readonly_cell',
-			message: 'Esta celda no es editable',
+			message: 'This cell is not editable',
 		}
 	}
 
@@ -46,7 +46,7 @@ export class Puzzle {
 		if (!this.isEditable(row, col)) {
 			return {
 				type: 'readonly_cell',
-				message: 'Esta celda no es editable',
+				message: 'This cell is not editable',
 			}
 		}
 
@@ -55,7 +55,7 @@ export class Puzzle {
 		if (!this.isValid(row, col, value)) {
 			return {
 				type: 'collision',
-				message: `El valor ${value} ya existe en la fila, columna o bloque`,
+				message: `The value ${value} already exists in the row, column, or block`,
 			}
 		}
 
@@ -67,7 +67,7 @@ export class Puzzle {
 
 		return {
 			type: 'reset',
-			message: 'Puzzle reiniciado',
+			message: 'Puzzle reset',
 		}
 	}
 }

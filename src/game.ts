@@ -61,7 +61,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 		if (!editStatus && puzzle.isComplete()) {
 			render(puzzle.grid, cursor, {
 				type: 'completed',
-				message: '¡Enhorabuena! Mini Sudoku completado',
+				message: 'Congrats! Mini Sudoku completed!',
 			})
 
 			process.exit(0)
@@ -74,7 +74,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 	} else if (isAnyDigitOrNumber) {
 		editStatus = {
 			type: 'invalid_key',
-			message: `La tecla ${key.name} no es válida. Usa números del 1 al 6.`,
+			message: `Key ${key.name} is not valid. Use numbers from 1 to 6.`,
 		}
 	}
 
