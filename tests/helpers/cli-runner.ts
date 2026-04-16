@@ -26,12 +26,12 @@ export class CLIProcess {
 
 	/** Returns the number of complete renders received so far (one per keypress + 1 for startup). */
 	getRenderCount(): number {
-		return (this.output.match(/┗/g) ?? []).length
+		return (this.output.match(/╝/g) ?? []).length
 	}
 
 	/**
 	 * Resolves when the accumulated stdout contains `n` complete renders.
-	 * Each render emits exactly one bottom-border `┗` character.
+	 * Each render emits exactly one bottom-border `╝` character.
 	 */
 	waitForRenderCount(n: number, timeout = 5000): Promise<void> {
 		return new Promise((resolve, reject) => {
@@ -124,11 +124,11 @@ export class CLIProcess {
 
 	/**
 	 * Extracts the last complete render from the accumulated output.
-	 * Slices from the last `┏` (top-left corner) to the end and trims whitespace.
+	 * Slices from the last `╔` (top-left corner) to the end and trims whitespace.
 	 * This avoids stale prefix bytes from a previous render leaking between assertions.
 	 */
 	static extractLastRender(output: string): string {
-		const idx = output.lastIndexOf('┏')
+		const idx = output.lastIndexOf('╔')
 		return (idx >= 0 ? output.slice(idx) : output).trim()
 	}
 
@@ -145,7 +145,7 @@ export class CLIProcess {
 		const grid: number[][] = []
 
 		for (const line of clean.split('\n')) {
-			// Data rows contain both ┃ and │; skip borders and separators
+			// Data rows contain both ║ and │; skip borders and separators
 			if (!line.includes('│')) continue
 
 			const cells: number[] = []

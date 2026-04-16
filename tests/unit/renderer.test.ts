@@ -48,19 +48,19 @@ describe('render', () => {
 	it('outputs the top border', () => {
 		render(GRID, CURSOR)
 		const board: string = logSpy.mock.calls[0][0]
-		expect(board).toContain('┏')
+		expect(board).toContain('╔')
 	})
 
 	it('outputs the bottom border', () => {
 		render(GRID, CURSOR)
 		const board: string = logSpy.mock.calls[0][0]
-		expect(board).toContain('┗')
+		expect(board).toContain('╚')
 	})
 
 	it('outputs the block separator', () => {
 		render(GRID, CURSOR)
 		const board: string = logSpy.mock.calls[0][0]
-		expect(board).toContain('┣')
+		expect(board).toContain('╠')
 	})
 
 	it('renders grid values in the board', () => {

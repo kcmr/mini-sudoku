@@ -25,10 +25,10 @@ describe('startup', () => {
 		await cli.waitForRenderCount(1)
 
 		const output = cli.getOutput()
-		expect(output).toContain('┏')
-		expect(output).toContain('┗')
-		expect(output).toContain('┃')
-		expect(output).toContain('━')
+		expect(output).toContain('╔')
+		expect(output).toContain('╚')
+		expect(output).toContain('║')
+		expect(output).toContain('═')
 	})
 
 	it('renders exactly 6 data rows', async () => {
