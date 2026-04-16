@@ -1,33 +1,57 @@
 {
   "name": "mini-sudoku",
   "version": "1.0.0",
+  "description": "A minimal Sudoku (6×6) game for the terminal",
+  "keywords": [
+    "sudoku",
+    "6x6 sudoku",
+    "terminal",
+    "cli",
+    "game",
+    "puzzle",
+    "node",
+    "interactive"
+  ],
+  "homepage": "https://github.com/kcmr/mini-sudoku#readme",
+  "bugs": {
+    "url": "https://github.com/kcmr/mini-sudoku/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kcmr/mini-sudoku.git"
+  },
+  "license": "MIT",
+  "author": "Kus Cámara <kus.camara@gmail.com>",
   "type": "module",
   "imports": {
     "#src/*.js": "./src/*.js",
     "#tests/*.js": "./tests/*.js"
   },
   "bin": {
-    "mini-sudoku": "./dist/cli.js"
+    "mini-sudoku": "dist/cli.js"
+  },
+  "directories": {
+    "test": "tests"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "pretest:e2e": "npm run build",
-    "test:e2e": "vitest run --project e2e",
-    "test:unit": "vitest --project unit",
+    "build": "tsup src/cli.ts --format esm --clean",
+    "check": "biome check --write",
+    "dev": "tsup src/cli.ts --format esm --watch --onSuccess \"node dist/cli.js\"",
+    "format": "biome format --write",
+    "prepublishOnly": "npm run build -- --minify",
     "pretest:coverage": "npm run build",
     "test:coverage": "vitest run --coverage",
-    "dev": "tsup src/cli.ts --format esm --watch --onSuccess \"node dist/cli.js\"",
-    "build": "tsup src/cli.ts --format esm --clean",
-    "prepublishOnly": "npm run build -- --minify",
-    "check": "biome check --write",
-    "format": "biome format --write"
+    "pretest:e2e": "npm run build",
+    "test:e2e": "vitest run --project e2e",
+    "test:unit": "vitest --project unit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "dependencies": {
+    "@clack/prompts": "^1.2.0",
+    "picocolors": "^1.1.1"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
     "@types/node": "^25.6.0",
@@ -37,8 +61,7 @@
     "typescript": "^6.0.2",
     "vitest": "^4.1.4"
   },
-  "dependencies": {
-    "@clack/prompts": "^1.2.0",
-    "picocolors": "^1.1.1"
+  "engines": {
+    "node": ">=18"
   }
 }

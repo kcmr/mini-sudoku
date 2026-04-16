@@ -6,6 +6,10 @@ pre-commit:
     - name: check formatting
       run: npx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
       stage_fixed: true
+    - name: sort package.json
+      run: npx sort-package-json
+      glob: "package.json"
+      stage_fixed: true
 
 pre-push:
   jobs:
