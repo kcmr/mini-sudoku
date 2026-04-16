@@ -1,12 +1,44 @@
 {
-  "name": "mini-sudoku-node",
+  "name": "mini-sudoku",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "imports": {
+    "#src/*.js": "./src/*.js",
+    "#tests/*.js": "./tests/*.js"
+  },
+  "bin": {
+    "mini-sudoku": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest:e2e": "npm run build",
+    "test:e2e": "vitest run --project e2e",
+    "test:unit": "vitest --project unit",
+    "pretest:coverage": "npm run build",
+    "test:coverage": "vitest run --coverage",
+    "dev": "tsup src/cli.ts --format esm --watch --onSuccess \"node dist/cli.js\"",
+    "build": "tsup src/cli.ts --format esm --clean",
+    "prepublishOnly": "npm run build -- --minify",
+    "check": "biome check --write",
+    "format": "biome format --write"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.12",
+    "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.4",
+    "lefthook": "^2.1.5",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.2.0",
+    "picocolors": "^1.1.1"
+  }
 }
