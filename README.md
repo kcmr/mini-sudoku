@@ -23,13 +23,6 @@ npx mini-sudoku
 
 You'll be prompted to select a difficulty level. Once in the game, use the controls below to play.
 
-## Options
-
-| Flag | Alias | Description |
-|------|-------|-------------|
-| `--level <easy\|medium\|hard>` | `-l` | Skip the prompt and start at the given difficulty |
-| `--help` | `-h` | Show the help message |
-
 ## Controls
 
 | Key | Action |
@@ -39,6 +32,13 @@ You'll be prompted to select a difficulty level. Once in the game, use the contr
 | `x` | Delete the cell value |
 | `Ctrl+R` | Reset the board |
 | `Ctrl+C` | Quit |
+
+## Options
+
+| Flag | Alias | Description |
+|------|-------|-------------|
+| `--level <easy\|medium\|hard>` | `-l` | Skip the prompt and start at the given difficulty |
+| `--help` | `-h` | Show the help message |
 
 ## License
 
