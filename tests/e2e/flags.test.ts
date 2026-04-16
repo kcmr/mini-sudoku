@@ -64,7 +64,7 @@ describe('--level / -l', () => {
 		await cli.waitForRenderCount(1)
 
 		const output = stripAnsi(cli.getOutput())
-		expect(output).toContain('┏')
+		expect(output).toContain('╔')
 		expect(cli.getExitCode()).toBeNull()
 	})
 })
