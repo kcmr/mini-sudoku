@@ -1,6 +1,7 @@
 import type { Key } from 'node:readline'
 import { Puzzle } from './puzzle.js'
 import { render } from './renderer.js'
+import { getEditStatus } from './statuses.js'
 import {
 	type Cursor,
 	type Direction,
@@ -59,10 +60,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 		editStatus = puzzle.setCell(row, col, value)
 
 		if (!editStatus && puzzle.isComplete()) {
-			render(puzzle.grid, cursor, {
-				type: 'completed',
-				message: 'Congrats! Mini Sudoku completed!',
-			})
+			render(puzzle.grid, cursor, getEditStatus('completed'))
 
 			process.exit(0)
 		}
@@ -72,10 +70,7 @@ function updatePuzzle(puzzle: Puzzle, key: Key, cursor: Cursor) {
 		editStatus = puzzle.reset()
 		resetCursor(cursor)
 	} else if (isAnyDigitOrNumber) {
-		editStatus = {
-			type: 'invalid_key',
-			message: `Key ${key.name} is not valid. Use numbers from 1 to 6.`,
-		}
+		editStatus = getEditStatus('invalid_key', key.name)
 	}
 
 	render(puzzle.grid, cursor, editStatus)

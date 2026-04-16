@@ -1,3 +1,4 @@
+import { getEditStatus } from './statuses.js'
 import type { CellValue, EditStatus, Grid, Level } from './types.js'
 import { arrayRange, shuffle } from './utils.js'
 
@@ -36,27 +37,18 @@ export class Puzzle {
 			return null
 		}
 
-		return {
-			type: 'readonly_cell',
-			message: 'This cell is not editable',
-		}
+		return getEditStatus('readonly_cell')
 	}
 
 	setCell(row: number, col: number, value: CellValue): EditStatus {
 		if (!this.isEditable(row, col)) {
-			return {
-				type: 'readonly_cell',
-				message: 'This cell is not editable',
-			}
+			return getEditStatus('readonly_cell')
 		}
 
 		this.grid[row][col] = value
 
 		if (!this.isValid(row, col, value)) {
-			return {
-				type: 'collision',
-				message: `The value ${value} already exists in the row, column, or block`,
-			}
+			return getEditStatus('collision', String(value))
 		}
 
 		return null
@@ -65,10 +57,7 @@ export class Puzzle {
 	reset(): Exclude<EditStatus, null> {
 		this.grid = structuredClone(this.initialGrid)
 
-		return {
-			type: 'reset',
-			message: 'Puzzle reset',
-		}
+		return getEditStatus('reset')
 	}
 }
 
